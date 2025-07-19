@@ -12,22 +12,23 @@ class MotionDetectionApp:
         # Set title of motion detection window
         self.root.title("Motion Detection App")
         # Set window size
-        self.root.geometry("300x150")
+        self.root.geometry("400x150")
         
         # Create start button calling the start_detection method
         self.start_button = ttk.Button(root, text="Start Motion Detection", command=self.start_detection)
         # Add button to window with padding
         self.start_button.pack(pady=10)
         
-        # Create stop button calling the stop_detection method
-        self.stop_button = ttk.Button(root, text="Stop Motion Detection", command=self.stop_detection, state=tk.DISABLED)
-        # Add button to window with padding
-        self.stop_button.pack(pady=10)
+        # Create instruction so user knows how to use the app
+        self.instructions_label = ttk.Label(root, text=" 🎥 Press the start button to begin motion detection.\n 🛑 Close the window to exit program.")
+        # Add label to window with padding
+        self.instructions_label.pack(pady=5)
         
         # Add status label to show current state of motion detection
         self.status_label = ttk.Label(root, text="Status: Not running")
         # Add label to window with padding
         self.status_label.pack(pady=5)
+        
         
         # Initialize flag to check if motion detection is running
         self.running = False
@@ -42,7 +43,7 @@ class MotionDetectionApp:
         # Disable start button since motion detection is running
         self.start_button.configure(state=tk.DISABLED)
         # Enable stop button since motion detection is running
-        self.stop_button.configure(state=tk.NORMAL)
+        self.instructions_label.configure(text="Press 'q' to stop motion detection.")
         # Update status label to show motion detection is running
         self.status_label.configure(text="Status: Running")
         # Make sure all changes are made to the window before starting motion detection
@@ -58,7 +59,7 @@ class MotionDetectionApp:
         # Enable start button since motion detection is stopped in order to restart motion detection
         self.start_button.configure(state=tk.NORMAL)
         # Disable stop button since motion detection is stopped
-        self.stop_button.configure(state=tk.DISABLED)
+        self.instructions_label.configure(text="🎥 Press the start button to begin motion detection again.\n 🛑 Close the window to exit program.")
         # Update status label to show motion detection is stopped
         self.status_label.configure(text="Status: Not running")
         
@@ -124,6 +125,7 @@ class MotionDetectionApp:
             
             # Update the previous frame and previous gray frame for the next iteration
             prev_gray = gray.copy()
+            
             
         # Stop motion detection
         self.stop_detection()

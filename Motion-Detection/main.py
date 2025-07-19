@@ -1,8 +1,8 @@
 import cv2
-import sys
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import time
 
 
 class MotionDetectionApp:
@@ -45,6 +45,8 @@ class MotionDetectionApp:
         self.stop_button.configure(state=tk.NORMAL)
         # Update status label to show motion detection is running
         self.status_label.configure(text="Status: Running")
+        # Make sure all changes are made to the window before starting motion detection
+        self.root.update_idletasks()
         # Call detect_motion to motion detection process
         self.detect_motion()
         
@@ -85,16 +87,16 @@ class MotionDetectionApp:
         prev_gray = cv2.GaussianBlur(prev_gray, (21, 21), 0)
         
         # Loop until motion detection is stopped
-        while(self.running):
+        while self.running:
             _, frame = self.cap.read()
             # Convert the frame to grayscale for easier processing
-            frame = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             # Apply Gaussian blur to the frame to reduce noise
-            frame = cv2.GaussianBlur(prev_gray, (21, 21), 0)
+            gray = cv2.GaussianBlur(gray, (21, 21), 0)
             
             # Compute the absolute difference between the current frame and the previous frame
             # Detect any changes to confirm motion
-            delta_frame = cv2.absdiff(prev_gray, frame)
+            delta_frame = cv2.absdiff(prev_gray, gray)
             # Threshold the delta frame to get a binary image
             thresh = cv2.threshold(delta_frame, 25, 255, cv2.THRESH_BINARY)[1]
             # Dilate the thresholded image to fill in holes, white regions larger (motion areas)
@@ -121,7 +123,7 @@ class MotionDetectionApp:
                 break
             
             # Update the previous frame and previous gray frame for the next iteration
-            prevy_gray = gray.copy()
+            prev_gray = gray.copy()
             
         # Stop motion detection
         self.stop_detection()
@@ -134,7 +136,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     # Instance of MotionDetectionApp
     app = MotionDetectionApp(root)
-    
     # Start the main loop of the application
     root.mainloop()
 

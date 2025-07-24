@@ -16,15 +16,16 @@ dataset_size = 100
 
 
 # Booting up camera for capture
-# New Mac software requires index 1 for computer camera
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 time.sleep(1)
+
 
 # Loop to collect images for each class
 for j in range(number_of_classes):
     # Create a subdirectory for each class
-    if not os.path.exists(os.path.join(DATA_DIR, str(j))):
-        os.makedirs(os.path.join(DATA_DIR, str(j)))
+    storage_title = str(chr(j+65))  # A, B, C, ...
+    if not os.path.exists(os.path.join(DATA_DIR, storage_title)):
+        os.makedirs(os.path.join(DATA_DIR, storage_title))
     
     print(f'Collecting images for class {j}....')
     
@@ -58,7 +59,7 @@ for j in range(number_of_classes):
         cv2.imshow('Frame', frame)
         cv2.waitKey(25)
         # Save the frame as an image file for the current class
-        cv2.imwrite(os.path.join(DATA_DIR, str(j), '{}.jpg'.format(counter)), frame)
+        cv2.imwrite(os.path.join(DATA_DIR, storage_title, '{}.jpg'.format(counter)), frame)
         
         counter += 1
 

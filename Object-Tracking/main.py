@@ -42,7 +42,7 @@ def main():
     if not video_path:
         # Use webcam if no path is provided
         # On new macOS, the webcam is usually at index 1
-        video = cv2.VideoCapture(1, cv2.CAP_AVFOUNDATION)
+        video = cv2.VideoCapture(0, cv2.CAP_AVFOUNDATION)
     else:
         # Use the provided video file path
         video = cv2.VideoCapture(video_path)

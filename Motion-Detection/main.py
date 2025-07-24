@@ -74,8 +74,7 @@ class MotionDetectionApp:
     # Method to detect motion using OpenCV 
     def detect_motion(self):
         # Use webcam for motion detection
-        # On new macOS, the webcam is usually at index 1
-        self.cap = cv2.VideoCapture(1)  
+        self.cap = cv2.VideoCapture(0)  
         
         # Allow camera to warm up
         time.sleep(1)  
